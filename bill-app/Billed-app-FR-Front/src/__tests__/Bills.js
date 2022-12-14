@@ -49,7 +49,7 @@ describe("Given I am connected as an employee", () => {
   });
 
   describe("When I am on Bills Page and i click on the eye icon", () => {
-    test("A modal should open with the image of the receipt", () => {
+    test("Then a modal should open with the image of the receipt", () => {
       Object.defineProperty(window, "localStorage", {
         value: localStorageMock,
       });
