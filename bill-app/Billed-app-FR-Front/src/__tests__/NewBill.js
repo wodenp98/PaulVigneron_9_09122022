@@ -38,18 +38,17 @@ describe("Given I am connected as an employee", () => {
     });
   });
 
-  describe("When I am on NewBill Page and i upload a file", () => {
+  describe("When I am on NewBill Page and I upload a file", () => {
     test("Then the filame should be displayed in the receipt input", () => {
       document.body.innerHTML = NewBillUI();
 
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
-      const store = null;
       const newBill = new NewBill({
         document,
         onNavigate,
-        store,
+        store: mockStore,
         localStorage: window.localStorage,
       });
 
@@ -65,4 +64,34 @@ describe("Given I am connected as an employee", () => {
       expect(input.files[0].name).toBe("image.jpg");
     });
   });
+
+  describe("When I am on NewBill Page and I upload a file with invalid format", () => {
+    test("Then I should have an alert message ", () => {
+      Object.defineProperty(window, "alert", { value: jest.fn() });
+
+      document.body.innerHTML = NewBillUI();
+
+      const newBill = new NewBill({
+        document,
+        onNavigate,
+        store: mockStore,
+        localStorage: window.localStorage,
+      });
+
+      const handleChangeFile = jest.fn(newBill.handleChangeFile);
+
+      const input = screen.getByTestId("file");
+      input.addEventListener("change", handleChangeFile);
+
+      const file = new File(["image.webp"], "image.webp", {
+        type: "image/webp",
+      });
+      userEvent.upload(input, file);
+
+      expect(handleChangeFile).toHaveBeenCalled();
+      expect(window.alert).toHaveBeenCalled();
+    });
+  });
 });
+
+// test d'intégration POST

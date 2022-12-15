@@ -21,38 +21,37 @@ export default class NewBill {
     e.preventDefault();
     const file = this.document.querySelector(`input[data-testid="file"]`)
       .files[0];
-    // console.log(file);
+    // console.log(file.name);
     const filePath = e.target.value.split(/\\/g);
     let fileName = filePath[filePath.length - 1].split(".");
     fileName = fileName[fileName.length - 1];
     const imageTypeRegEx = new RegExp(/^(jpg|jpe?g|png)$/i);
 
-    if (imageTypeRegEx.test(fileName)) {
-      const formData = new FormData();
-      const email = JSON.parse(localStorage.getItem("user")).email;
-      formData.append("file", file);
-      formData.append("email", email);
+    const formData = new FormData();
+    const email = JSON.parse(localStorage.getItem("user")).email;
+    formData.append("file", file);
+    formData.append("email", email);
 
-      this.store
-        .bills()
-        .create({
-          data: formData,
-          headers: {
-            noContentType: true,
-          },
-        })
-        .then(({ fileUrl, key }) => {
-          console.log(fileUrl);
-          this.billId = key;
-          this.fileUrl = fileUrl;
-          this.fileName = fileName;
-        })
-        .catch((error) => console.error(error));
-    } else {
+    if (!imageTypeRegEx.test(fileName)) {
       alert("Le justificatif doit être au format jpg, jpeg ou png");
       this.document.querySelector(`input[data-testid="file"]`).value = "";
-      return false;
     }
+
+    this.store
+      .bills()
+      .create({
+        data: formData,
+        headers: {
+          noContentType: true,
+        },
+      })
+      .then(({ fileUrl, key }) => {
+        console.log(fileUrl);
+        this.billId = key;
+        this.fileUrl = fileUrl;
+        this.fileName = fileName;
+      })
+      .catch((error) => console.error(error));
   };
   handleSubmit = (e) => {
     e.preventDefault();
