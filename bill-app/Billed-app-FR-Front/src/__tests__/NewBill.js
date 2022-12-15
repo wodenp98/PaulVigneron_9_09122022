@@ -89,6 +89,8 @@ describe("Given I am connected as an employee", () => {
       userEvent.upload(input, file);
 
       expect(handleChangeFile).toHaveBeenCalled();
+      expect(input.files[0].name).not.toBe("image.jpg");
+      expect(input.files[0].name).toBe("image.webp");
       expect(window.alert).toHaveBeenCalled();
     });
   });

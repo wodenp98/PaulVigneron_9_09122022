@@ -50,6 +50,7 @@ describe("Given I am connected as an employee", () => {
 
   describe("When I am on Bills Page and i click on the eye icon", () => {
     test("Then a modal should open with the image of the receipt", () => {
+      // données de la page
       Object.defineProperty(window, "localStorage", {
         value: localStorageMock,
       });
@@ -60,6 +61,7 @@ describe("Given I am connected as an employee", () => {
         })
       );
       document.body.innerHTML = BillsUI({ data: bills });
+      // chemin d'accès
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
