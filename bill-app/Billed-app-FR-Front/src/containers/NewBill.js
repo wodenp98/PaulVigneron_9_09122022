@@ -35,23 +35,23 @@ export default class NewBill {
     if (!imageTypeRegEx.test(fileName)) {
       alert("Le justificatif doit être au format jpg, jpeg ou png");
       this.document.querySelector(`input[data-testid="file"]`).value = "";
+    } else {
+      this.store
+        .bills()
+        .create({
+          data: formData,
+          headers: {
+            noContentType: true,
+          },
+        })
+        .then(({ fileUrl, key }) => {
+          console.log(fileUrl);
+          this.billId = key;
+          this.fileUrl = fileUrl;
+          this.fileName = fileName;
+        })
+        .catch((error) => console.error(error));
     }
-
-    this.store
-      .bills()
-      .create({
-        data: formData,
-        headers: {
-          noContentType: true,
-        },
-      })
-      .then(({ fileUrl, key }) => {
-        console.log(fileUrl);
-        this.billId = key;
-        this.fileUrl = fileUrl;
-        this.fileName = fileName;
-      })
-      .catch((error) => console.error(error));
   };
   handleSubmit = (e) => {
     e.preventDefault();
