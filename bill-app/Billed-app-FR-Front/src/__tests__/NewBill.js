@@ -29,12 +29,12 @@ describe("Given I am connected as an employee", () => {
 
       await waitFor(() => screen.getByTestId("icon-mail"));
       const windowIcon = screen.getByTestId("icon-mail");
-      expect(windowIcon.className).toBe("active-icon");
+      expect(windowIcon.className).toContain("active-icon");
     });
 
     test("Then the form should be displayed", () => {
       document.body.innerHTML = NewBillUI();
-      expect(screen.getByTestId("form-new-bill")).toBeTruthy();
+      expect(screen.getByTestId("form-new-bill")).toBeDefined();
     });
   });
 
@@ -89,7 +89,6 @@ describe("Given I am connected as an employee", () => {
       userEvent.upload(input, file);
 
       expect(handleChangeFile).toHaveBeenCalled();
-      expect(input.files[0].name).not.toBe("image.jpg");
       expect(input.files[0].name).toBe("image.webp");
       expect(window.alert).toHaveBeenCalled();
     });
@@ -152,6 +151,8 @@ describe("Given I am a user connected as Employee", () => {
       fireEvent.change(pct, { target: { value: testNewBill.pct } });
       fireEvent.change(comment, { target: { value: testNewBill.commentary } });
       userEvent.upload(input, testNewBill.fileName);
+
+      expect(expenseType.value).toBe(testNewBill.type);
 
       const handleSubmit = jest.fn(newBill.handleSubmit);
       const formNewBill = screen.getByTestId("form-new-bill");

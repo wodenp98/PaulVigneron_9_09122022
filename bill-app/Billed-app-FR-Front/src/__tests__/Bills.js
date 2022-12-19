@@ -117,7 +117,7 @@ describe("Given I am connected as an employee", () => {
       userEvent.click(buttonNewBill);
 
       expect(handleClickNewBillPage).toHaveBeenCalled();
-      expect(screen.getByTestId("form-new-bill")).toBeTruthy();
+      expect(screen.getByTestId("form-new-bill")).toBeDefined();
     });
   });
 });
@@ -136,7 +136,7 @@ describe("Given I am a user connected as Employee", () => {
       router();
       window.onNavigate(ROUTES_PATH.Bills);
       await waitFor(() => screen.getByText("Mes notes de frais"));
-      expect(screen.getByTestId("tbody")).toBeTruthy();
+      expect(screen.getByTestId("tbody")).toBeDefined();
     });
 
     describe("When an error occurs on API", () => {
