@@ -22,14 +22,14 @@ const row = (bill) => {
 const rows = (data) => {
   return data && data.length
     ? data
-        .sort(function (a, b) {
-          return a.date < b.date ? 1 : -1;
+        .sort((a, b) => {
+          if (new Date(a.date) < new Date(b.date)) return 1;
+          if (new Date(a.date) > new Date(b.date)) return -1;
         })
         .map((bill) => row(bill))
         .join("")
     : "";
 };
-
 export default ({ data: bills, loading, error }) => {
   const modal = () => `
     <div class="modal fade" id="modaleFile" data-testid="modaleFileEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
